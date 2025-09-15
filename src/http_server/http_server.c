@@ -1,3 +1,4 @@
+#include "http_server.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <stdlib.h>
@@ -6,12 +7,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-// const char* SUPPORTED_VERSIONS[] = {
-//     "HTTP/1.0",
-//     "HTTP/1.1",
-// };
-
-int init_http_server(int port) {
+int init_http_socket(int port) {
     int listen_socket_fd;
     struct sockaddr_in address;
     int opt = 1;
@@ -45,20 +41,7 @@ int init_http_server(int port) {
     return listen_socket_fd;
 }
 
-struct http_header {
-    char name[64];
-    char value[256];
-};
-
-struct http_request {
-    char method[16];
-    char path[256];
-    char version[16];
-    struct http_header headers[32];
-    int header_count;
-};
-
-struct http_request parseRequest(char* buffer) {
+struct http_request parse_request(char* buffer) {
     struct http_request req;
     memset(&req, 0, sizeof(req));
 
@@ -95,59 +78,67 @@ struct http_request parseRequest(char* buffer) {
     return req;
 }
 
-void sendError(int client_fd, int code, const char *status, const char *description) {
-    char body[512];
-    snprintf(body, sizeof(body),
-        "<html><head><title>Pbtm PC</title></head><body><h1>%d %s</h1><p>%s</p></body></html>",
-    code, status, description);
-
-    char response[1024];
-    snprintf(response, sizeof(response),
-        "HTTP/1.0 %d %s\r\n"
-        "Content-Type: text/html\r\n"
-        "Content-Length: %zu\r\n"
-        "Connection: close\r\n"
-        "\r\n"
-        "%s",
-        code, status, strlen(body), body);
-
+void send_response(int client_fd, char* response) {
     write(client_fd, response, strlen(response));
 }
 
-void handle_client(int client_fd) {
-    printf("Client connected\n\n");
-
-    char buffer[4096];
-    int n = read(client_fd, buffer, sizeof(buffer) - 1);
-    if (n <= 0) {
-        return;
-    }
-    buffer[n] = '\0';
+void handle_request(int client_fd) {
+    while (1) {
+        char buffer[4096];
+        int n = read(client_fd, buffer, sizeof(buffer) - 1);
+        if (n <= 0) {
+            return;
+        }
+        buffer[n] = '\0';
+        
+        printf("Recebido:\n%s\n", buffer);
+        struct http_request req = parse_request(buffer);
     
-    printf("Recebido:\n%s\n", buffer);
-    struct http_request req = parseRequest(buffer);
-
-    printf("Método: %s\n", req.method);
-    printf("Path: %s\n", req.path);
-    printf("Versão: %s\n", req.version);
-
-    printf("Headers:\n");
-    for (int i = 0; i < req.header_count; i++) {
-        printf("  %s: %s\n", req.headers[i].name, req.headers[i].value);
-    }
-
-    if (strcmp(req.version, "HTTP/1.0") != 0) {
-        char* title = "HTTP Version Not Supported";
-        char* description = "Try using HTTP/1.0 instead.";
-
-        sendError(client_fd, 505, title,description);
-        return;
+        printf("Método: %s\n", req.method);
+        printf("Path: %s\n", req.path);
+        printf("Versão: %s\n", req.version);
+    
+        printf("Headers:\n");
+        for (int i = 0; i < req.header_count; i++) {
+            printf("  %s: %s\n", req.headers[i].name, req.headers[i].value);
+        }
+    
+        if (strcmp(req.version, "HTTP/1.0") == 0) { keep_alive = 0; 
+        else if (strcmp(req.version, "HTTP/1.1") == 0) {
+            for (int i = 0; i < req.header_count; i++) {
+                if (strcasecmp(req.headers[i].name, "Connection") == 0 &&
+                    strcasecmp(req.headers[i].value, "close") == 0) {
+                    return;
+                }           
+            }            
+        } else {
+            char body[512];
+            char* status = "HTTP Version Not Supported";
+            char* title = "HTTP Version Not Supported";
+            char* description = "Try using HTTP/1.0 or HTTP/1.1 instead.";
+    
+            snprintf(body, sizeof(body),
+                "<html><head><title>Pbtm PC</title></head><body><h1>505 %s</h1><p>%s</p></body></html>",
+            status, description);
+    
+            char response[1024];
+            snprintf(response, sizeof(response),
+                "HTTP/1.0 505 %s\r\n"
+                "Content-Type: text/html\r\n"
+                "Content-Length: %zu\r\n"
+                "Connection: close\r\n"
+                "\r\n"
+                "%s",
+            status, strlen(body), body);
+            send_response(client_fd, response);
+            return;
+        }
     }
 }
 
-int main() {
-    int listen_fd = init_http_server(80);
-    printf("Server listening on port 80\n");
+int http_server_init(int port, void (*callback)(int client_fd, struct http_request req)) {
+    int listen_fd = init_http_socket(port);
+    printf("Server listening on port %d\n", port);
     
     while (1) {
         int client_fd = accept(listen_fd, NULL, NULL);
@@ -160,7 +151,7 @@ int main() {
 
         if (pid == 0) {
             close(listen_fd);
-            handle_client(client_fd);
+            handle_request(client_fd);
             close(client_fd);
             exit(0);
         } else if (pid > 0) {
