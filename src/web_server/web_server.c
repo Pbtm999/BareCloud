@@ -49,9 +49,9 @@ int handle_request(int client_fd, struct http_request req) {
         char filepath[512];
 
         if (strcmp(req.path, "/") == 0) {
-            snprintf(filepath, sizeof(filepath), "static/index.html");
+            snprintf(filepath, sizeof(filepath), "static/build/index.html");
         } else {
-            snprintf(filepath, sizeof(filepath), "static%s", req.path);
+            snprintf(filepath, sizeof(filepath), "static/build%s", req.path);
         }
 
         char *buffer = NULL;
