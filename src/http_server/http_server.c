@@ -82,7 +82,7 @@ void send_response(int client_fd, char* response) {
     write(client_fd, response, strlen(response));
 }
 
-void handle_request(int client_fd) {
+void handle_connection(int client_fd, int (*callback)(int client_fd, struct http_request req)) {
     while (1) {
         char buffer[4096];
         int n = read(client_fd, buffer, sizeof(buffer) - 1);
@@ -91,7 +91,6 @@ void handle_request(int client_fd) {
         }
         buffer[n] = '\0';
         
-        printf("Recebido:\n%s\n", buffer);
         struct http_request req = parse_request(buffer);
     
         printf("Método: %s\n", req.method);
@@ -103,18 +102,21 @@ void handle_request(int client_fd) {
             printf("  %s: %s\n", req.headers[i].name, req.headers[i].value);
         }
     
-        if (strcmp(req.version, "HTTP/1.0") == 0) { keep_alive = 0; 
-        else if (strcmp(req.version, "HTTP/1.1") == 0) {
+        if (strcmp(req.version, "HTTP/1.0") == 0) {
+            callback(client_fd, req); 
+            return;
+        } else if (strcmp(req.version, "HTTP/1.1") == 0) {
             for (int i = 0; i < req.header_count; i++) {
                 if (strcasecmp(req.headers[i].name, "Connection") == 0 &&
                     strcasecmp(req.headers[i].value, "close") == 0) {
                     return;
-                }           
-            }            
+                }       
+            }
+
+            if (callback(client_fd, req) == 0) return;      
         } else {
             char body[512];
             char* status = "HTTP Version Not Supported";
-            char* title = "HTTP Version Not Supported";
             char* description = "Try using HTTP/1.0 or HTTP/1.1 instead.";
     
             snprintf(body, sizeof(body),
@@ -136,7 +138,7 @@ void handle_request(int client_fd) {
     }
 }
 
-int http_server_init(int port, void (*callback)(int client_fd, struct http_request req)) {
+int http_server_init(int port, int (*callback)(int client_fd, struct http_request req)) {
     int listen_fd = init_http_socket(port);
     printf("Server listening on port %d\n", port);
     
@@ -151,7 +153,9 @@ int http_server_init(int port, void (*callback)(int client_fd, struct http_reque
 
         if (pid == 0) {
             close(listen_fd);
-            handle_request(client_fd);
+            printf("connection opened :3\n");
+            handle_connection(client_fd, callback);
+            printf("connection closed :3\n");
             close(client_fd);
             exit(0);
         } else if (pid > 0) {

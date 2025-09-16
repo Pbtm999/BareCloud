@@ -14,7 +14,7 @@ struct http_request {
     int header_count;
 };
 
-int http_server_init(int port, void (*callback)(int client_fd, struct http_request req));
-void send_response(int client_fd, char *response)
+int http_server_init(int port, int (*callback)(int client_fd, struct http_request req));
+void send_response(int client_fd, char *response);
 
 #endif
