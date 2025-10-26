@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/signal.h>
 #include <sys/types.h>
 #include <unistd.h>
 
@@ -106,14 +107,24 @@ void handle_connection(int client_fd, int (*callback)(int client_fd, struct http
             callback(client_fd, req); 
             return;
         } else if (strcmp(req.version, "HTTP/1.1") == 0) {
+            int close_connection = 0;
+
             for (int i = 0; i < req.header_count; i++) {
                 if (strcasecmp(req.headers[i].name, "Connection") == 0 &&
                     strcasecmp(req.headers[i].value, "close") == 0) {
-                    return;
-                }       
+                        close_connection = 1;
+                        break;
+                    }       
+            }
+            
+            if (callback(client_fd, req) < 0) {
+                return;
             }
 
-            if (callback(client_fd, req) == 0) return;      
+            if (close_connection) {
+                printf("Connection: close header received from client\n");
+                return;
+            }
         } else {
             char body[512];
             char* status = "HTTP Version Not Supported";
@@ -138,34 +149,29 @@ void handle_connection(int client_fd, int (*callback)(int client_fd, struct http
     }
 }
 
-int http_server_init(int port, int (*callback)(int client_fd, struct http_request req)) {
+int http_server_init(int port, int (*callback)(int, struct http_request)) {
+    signal(SIGCHLD, SIG_IGN);
     int listen_fd = init_http_socket(port);
     printf("Server listening on port %d\n", port);
-    
+
     while (1) {
         int client_fd = accept(listen_fd, NULL, NULL);
-        if (client_fd < 0) {
-            perror("accept failed");
-            continue;
-        }
-        
-        pid_t pid = fork();
+        if (client_fd < 0) { perror("accept failed"); continue; }
 
+        pid_t pid = fork();
         if (pid == 0) {
             close(listen_fd);
-            printf("connection opened :3\n");
+            printf("Connection socket established\n");
             handle_connection(client_fd, callback);
-            printf("connection closed :3\n");
+            printf("Connection socket closed\n");
             close(client_fd);
             exit(0);
-        } else if (pid > 0) {
-            close(client_fd);
-        } else {
+        } else if (pid < 0) {
             perror("fork failed");
             close(client_fd);
-            exit(EXIT_FAILURE);
+        } else {
+            close(client_fd);
         }
     }
-
     return 0;
 }

@@ -1,0 +1,302 @@
+nohup: ignoring input
+Server listening on port 80
+Connection socket established
+Método: GET
+Path: /home/script.js
+Versão: HTTP/1.1
+Headers:
+  Host: www.pbtmpt.com
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0
+  Accept: */*
+  Accept-Language: pt-PT,pt;q=0.8,en;q=0.5,en-US;q=0.3
+  Accept-Encoding: gzip, deflate
+  Connection: keep-alive
+  Referer: http://www.pbtmpt.com/home/
+Request: GET /home/script.js
+Not Found 404 :(
+Connection socket closed
+Server listening on port 80
+Connection socket established
+Método: GET
+Path: /home/style.css
+Versão: HTTP/1.1
+Headers:
+  Host: www.pbtmpt.com
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0
+  Accept: text/css,*/*;q=0.1
+  Accept-Language: pt-PT,pt;q=0.8,en;q=0.5,en-US;q=0.3
+  Accept-Encoding: gzip, deflate
+  Connection: keep-alive
+  Referer: http://www.pbtmpt.com/home/
+  Priority: u=2
+Request: GET /home/style.css
+Not Found 404 :(
+Connection socket closed
+Server listening on port 80
+Connection socket established
+Método: GET
+Path: /home/insta.svg
+Versão: HTTP/1.1
+Headers:
+  Host: www.pbtmpt.com
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0
+  Accept: image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+  Accept-Language: pt-PT,pt;q=0.8,en;q=0.5,en-US;q=0.3
+  Accept-Encoding: gzip, deflate
+  Connection: keep-alive
+  Referer: http://www.pbtmpt.com/home/
+  Priority: u=5, i
+Request: GET /home/insta.svg
+Not Found 404 :(
+Connection socket closed
+Server listening on port 80
+Connection socket established
+Método: GET
+Path: /
+Versão: HTTP/1.1
+Headers:
+  Host: www.pbtmpt.com
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0
+  Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+  Accept-Language: pt-PT,pt;q=0.8,en;q=0.5,en-US;q=0.3
+  Accept-Encoding: gzip, deflate
+  Connection: keep-alive
+  Upgrade-Insecure-Requests: 1
+  Priority: u=0, i
+Request: GET /
+Método: GET
+Path: /home/
+Versão: HTTP/1.1
+Headers:
+  Host: www.pbtmpt.com
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0
+  Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+  Accept-Language: pt-PT,pt;q=0.8,en;q=0.5,en-US;q=0.3
+  Accept-Encoding: gzip, deflate
+  Connection: keep-alive
+  Upgrade-Insecure-Requests: 1
+  Priority: u=0, i
+Request: GET /home/
+Teste here!
+Método: GET
+Path: /home/tichinha.jpg
+Versão: HTTP/1.1
+Headers:
+  Host: www.pbtmpt.com
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0
+  Accept: image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+  Accept-Language: pt-PT,pt;q=0.8,en;q=0.5,en-US;q=0.3
+  Accept-Encoding: gzip, deflate
+  Connection: keep-alive
+  Referer: http://www.pbtmpt.com/home/
+  Priority: u=5, i
+Request: GET /home/tichinha.jpg
+Not Found 404 :(
+Connection socket closed
+Server listening on port 80
+Connection socket established
+Método: GET
+Path: /home/pinterest.svg
+Versão: HTTP/1.1
+Headers:
+  Host: www.pbtmpt.com
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0
+  Accept: image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+  Accept-Language: pt-PT,pt;q=0.8,en;q=0.5,en-US;q=0.3
+  Accept-Encoding: gzip, deflate
+  Connection: keep-alive
+  Referer: http://www.pbtmpt.com/home/
+  Priority: u=5, i
+Request: GET /home/pinterest.svg
+Not Found 404 :(
+Connection socket closed
+Server listening on port 80
+Connection socket established
+Método: GET
+Path: /home/linkedin-logo.svg
+Versão: HTTP/1.1
+Headers:
+  Host: www.pbtmpt.com
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0
+  Accept: image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+  Accept-Language: pt-PT,pt;q=0.8,en;q=0.5,en-US;q=0.3
+  Accept-Encoding: gzip, deflate
+  Connection: keep-alive
+  Referer: http://www.pbtmpt.com/home/
+  Priority: u=5, i
+Request: GET /home/linkedin-logo.svg
+Not Found 404 :(
+Connection socket closed
+Server listening on port 80
+Connection socket established
+Método: GET
+Path: /ticha/style.css
+Versão: HTTP/1.1
+Headers:
+  Host: www.pbtmpt.com
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0
+  Accept: text/css,*/*;q=0.1
+  Accept-Language: pt-PT,pt;q=0.8,en;q=0.5,en-US;q=0.3
+  Accept-Encoding: gzip, deflate
+  Connection: keep-alive
+  Referer: http://www.pbtmpt.com/ticha/
+  Priority: u=2
+Request: GET /ticha/style.css
+Teste here!
+Connection socket closed
+Server listening on port 80
+Connection socket established
+Método: GET
+Path: /ticha/script.js
+Versão: HTTP/1.1
+Headers:
+  Host: www.pbtmpt.com
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0
+  Accept: */*
+  Accept-Language: pt-PT,pt;q=0.8,en;q=0.5,en-US;q=0.3
+  Accept-Encoding: gzip, deflate
+  Connection: keep-alive
+  Referer: http://www.pbtmpt.com/ticha/
+Request: GET /ticha/script.js
+Teste here!
+Connection socket closed
+Server listening on port 80
+Connection socket established
+Método: GET
+Path: /ticha/insta.svg
+Versão: HTTP/1.1
+Headers:
+  Host: www.pbtmpt.com
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0
+  Accept: image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+  Accept-Language: pt-PT,pt;q=0.8,en;q=0.5,en-US;q=0.3
+  Accept-Encoding: gzip, deflate
+  Connection: keep-alive
+  Referer: http://www.pbtmpt.com/ticha/
+  Priority: u=5, i
+Request: GET /ticha/insta.svg
+Teste here!
+Connection socket closed
+Server listening on port 80
+Connection socket established
+Método: GET
+Path: /ticha/linkedin-logo.svg
+Versão: HTTP/1.1
+Headers:
+  Host: www.pbtmpt.com
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0
+  Accept: image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+  Accept-Language: pt-PT,pt;q=0.8,en;q=0.5,en-US;q=0.3
+  Accept-Encoding: gzip, deflate
+  Connection: keep-alive
+  Referer: http://www.pbtmpt.com/ticha/
+  Priority: u=5, i
+Request: GET /ticha/linkedin-logo.svg
+Teste here!
+Connection socket closed
+Server listening on port 80
+Connection socket established
+Método: GET
+Path: /ticha/tichinha.jpg
+Versão: HTTP/1.1
+Headers:
+  Host: www.pbtmpt.com
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0
+  Accept: image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+  Accept-Language: pt-PT,pt;q=0.8,en;q=0.5,en-US;q=0.3
+  Accept-Encoding: gzip, deflate
+  Connection: keep-alive
+  Referer: http://www.pbtmpt.com/ticha/
+  Priority: u=5, i
+Request: GET /ticha/tichinha.jpg
+Teste here!
+Connection socket closed
+Server listening on port 80
+Connection socket established
+Método: GET
+Path: /ticha/
+Versão: HTTP/1.1
+Headers:
+  Host: www.pbtmpt.com
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0
+  Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+  Accept-Language: pt-PT,pt;q=0.8,en;q=0.5,en-US;q=0.3
+  Accept-Encoding: gzip, deflate
+  Connection: keep-alive
+  Upgrade-Insecure-Requests: 1
+  Priority: u=0, i
+Request: GET /ticha/
+Teste here!
+Método: GET
+Path: /ticha/pinterest.svg
+Versão: HTTP/1.1
+Headers:
+  Host: www.pbtmpt.com
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0
+  Accept: image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+  Accept-Language: pt-PT,pt;q=0.8,en;q=0.5,en-US;q=0.3
+  Accept-Encoding: gzip, deflate
+  Connection: keep-alive
+  Referer: http://www.pbtmpt.com/ticha/
+  Priority: u=5, i
+Request: GET /ticha/pinterest.svg
+Teste here!
+Connection socket closed
+Server listening on port 80
+Connection socket established
+Método: GET
+Path: /ticha/aguacomprido.png
+Versão: HTTP/1.1
+Headers:
+  Host: www.pbtmpt.com
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0
+  Accept: image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+  Accept-Language: pt-PT,pt;q=0.8,en;q=0.5,en-US;q=0.3
+  Accept-Encoding: gzip, deflate
+  Connection: keep-alive
+  Referer: http://www.pbtmpt.com/ticha/style.css
+  Priority: u=4, i
+Request: GET /ticha/aguacomprido.png
+Teste here!
+Connection socket closed
+Server listening on port 80
+Connection socket established
+Método: GET
+Path: /favicon.ico
+Versão: HTTP/1.1
+Headers:
+  Host: www.pbtmpt.com
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0
+  Accept: image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+  Accept-Language: pt-PT,pt;q=0.8,en;q=0.5,en-US;q=0.3
+  Accept-Encoding: gzip, deflate
+  Connection: keep-alive
+  Referer: http://www.pbtmpt.com/home/
+  Priority: u=6
+Request: GET /favicon.ico
+Not Found 404 :(
+Connection socket closed
+Server listening on port 80
+Connection socket established
+Método: GET
+Path: /.env
+Versão: HTTP/1.1
+Headers:
+  Host: 193.34.69.161
+  Accept: */*
+  User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/5.0; .NET CLR 2.0.50727; .NET CLR 3.0.30729; .NET CLR 3.5.30729; .NET4.0C; .NET4.0E)
+Request: GET /.env
+Not Found 404 :(
+Connection socket closed
+Server listening on port 80
+Connection socket established
+Método: GET
+Path: /.env-ip-blacklist
+Versão: HTTP/1.1
+Headers:
+  Host: 193.34.69.161
+  Accept: */*
+  User-Agent: Mozilla/5.0 (Linux; U; Android 4.0.3; en-gb; GT-I9100 Build/IML74K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30
+Request: GET /.env-ip-blacklist
+Not Found 404 :(
+Connection socket closed

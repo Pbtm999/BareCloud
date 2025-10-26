@@ -8,7 +8,7 @@ SRCS = $(SRC)/main.c \
        $(SRC)/web_server/web_server.c
 
 OBJS = $(SRCS:$(SRC)/%.c=$(BUILD)/%.o)
-TARGET = server
+TARGET = barecloud
 
 all: $(TARGET)
 

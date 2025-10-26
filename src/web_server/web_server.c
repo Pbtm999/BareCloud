@@ -1,4 +1,5 @@
 #include "http_server.h"
+#include "web_server.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
@@ -49,10 +50,40 @@ int handle_request(int client_fd, struct http_request req) {
     if (strcmp(req.method, "GET") == 0) {
         char filepath[512];
 
-        if (strcmp(req.path, "/") == 0) {
-            snprintf(filepath, sizeof(filepath), "static/build/index.html");
+        struct redirect redirects[] = {
+            { "/", "/home/" },
+            { "/ticha", "/ticha/" },
+            { NULL, NULL }
+        };
+
+        const char *target = NULL;
+        for (int i = 0; redirects[i].from != NULL; i++) {
+            if (strcmp(req.path, redirects[i].from) == 0) {
+                target = redirects[i].to;
+                break;
+            }
+        }
+
+        int isStaticFile = 0;
+        if (target) {
+            char response[512];
+            snprintf(response, sizeof(response),
+                "HTTP/1.1 301 Moved Permanently\r\n"
+                "Location: %s\r\n"
+                "Content-Length: 0\r\n"
+                "Connection: keep-alive\r\n"
+                "\r\n", target);
+            write(client_fd, response, strlen(response));
+            return 0;
         } else {
-            snprintf(filepath, sizeof(filepath), "static/build%s", req.path);
+            const char *clean_path = req.path[0] == '/' ? req.path + 1 : req.path;
+
+            if (strchr(clean_path, '.') == NULL) {
+                snprintf(filepath, sizeof(filepath), "static/%s/index.html", clean_path);
+            } else {
+                isStaticFile = 1;
+                snprintf(filepath, sizeof(filepath), "static/%s", clean_path);
+            }
         }
 
         char *buffer = NULL;
@@ -60,12 +91,25 @@ int handle_request(int client_fd, struct http_request req) {
         int status = request_static_file(filepath, &buffer, &size);
         
         if (status == HTTP_NOT_FOUND) {
-            send_response(client_fd, "HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\n\r\n");
+            printf("Not Found 404 :(\n");
+            send_response(client_fd, "HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\nConnection: close\r\n\r\n");
             return 0;
         } else if (status == HTTP_INTERNAL_ERROR) {
-            send_response(client_fd, "HTTP/1.1 500 Internal Server Error\r\nContent-Length: 0\r\n\r\n");
+            printf("Error 500 :(\n");
+            send_response(client_fd, "HTTP/1.1 500 Internal Server Error\r\nContent-Length: 0\r\nConnection: close\r\n\r\n");
             return 0;
         }
+
+        int client_wants_close = 0;
+        for (int i = 0; i < req.header_count; i++) {
+            if (strcasecmp(req.headers[i].name, "Connection") == 0) {
+                if (strcasecmp(req.headers[i].value, "close") == 0) {
+                    client_wants_close = 1;
+                }
+                break;
+            }
+        }
+        printf("Teste here!\n");
 
         const char *mime = get_mime_type(filepath);
 
@@ -74,9 +118,10 @@ int handle_request(int client_fd, struct http_request req) {
             "HTTP/1.1 200 OK\r\n"
             "Content-Type: %s\r\n"
             "Content-Length: %ld\r\n"
-            "Connection: close\r\n"
-            "\r\n", mime, size);
-
+            "%s"
+            "\r\n",
+            mime, size,
+            client_wants_close || isStaticFile ? "Connection: close\r\n" : "Connection: keep-alive\r\n");
         write(client_fd, header, strlen(header));
         write(client_fd, buffer, size);
 
