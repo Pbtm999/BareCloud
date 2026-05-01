@@ -8,16 +8,27 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-int init_http_socket(int port) {
+/*
+    Initialize listen http socket
+    Create socket for listen to connection requests
+
+    params:
+        int port
+
+    returns listen_socket_fd and integer in case of succes creating the specified socket
+*/
+int init_http_listen_socket(int port) {
     int listen_socket_fd;
     struct sockaddr_in address;
     int opt = 1;
 
+    // Tries to create the socket as an INET and STREAM type
     if ((listen_socket_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        perror("socket failed");
+        perror(" failed");
         exit(EXIT_FAILURE);
     }
 
+    // Sets socket options to enable multiple ports listners and reuse the adress even in wait time
     if (setsockopt(listen_socket_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0 
         || setsockopt(listen_socket_fd, SOL_SOCKET, SO_REUSEPORT, &opt, sizeof(opt)) < 0) 
     {
@@ -29,11 +40,13 @@ int init_http_socket(int port) {
     address.sin_addr.s_addr = INADDR_ANY;
     address.sin_port = htons(port);
 
+    // binds the socket to a specific port and IP
     if (bind(listen_socket_fd, (struct sockaddr*)&address, sizeof(address)) < 0) {
         perror("bind failed");
         exit(EXIT_FAILURE);
     }
 
+    // places the socket to listen
     if (listen(listen_socket_fd, 5) < 0) {
         perror("listen failed");
         exit(EXIT_FAILURE);
@@ -149,18 +162,28 @@ void handle_connection(int client_fd, int (*callback)(int client_fd, struct http
     }
 }
 
+/*
+    Initialize http server and loops while on
+    Create socket for handle connection requests and then to handle the request itself
+
+    params:
+        int port
+        int (*callback)(int, struct http_request)
+
+    returns 0 on termination
+*/
 int http_server_init(int port, int (*callback)(int, struct http_request)) {
-    signal(SIGCHLD, SIG_IGN);
-    int listen_fd = init_http_socket(port);
+    //signal(SIGCHLD, SIG_IGN);
+    int listen_socket = init_http_listen_socket(port);
     printf("Server listening on port %d\n", port);
 
     while (1) {
-        int client_fd = accept(listen_fd, NULL, NULL);
+        int client_fd = accept(listen_socket, NULL, NULL);
         if (client_fd < 0) { perror("accept failed"); continue; }
 
         pid_t pid = fork();
         if (pid == 0) {
-            close(listen_fd);
+            close(listen_socket);
             printf("Connection socket established\n");
             handle_connection(client_fd, callback);
             printf("Connection socket closed\n");
