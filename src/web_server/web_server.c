@@ -44,21 +44,36 @@ const char* get_mime_type(const char *path) {
     return "application/octet-stream";
 }
 
+char* normalize(const char *path) {
+    size_t len = strlen(path);
+
+    char *new_path = malloc(len + 2);
+    strcpy(new_path, path);
+
+    if (len == 0 || new_path[len - 1] != '/') {
+        new_path[len] = '/';
+        new_path[len + 1] = '\0';
+    }
+
+    return new_path;
+}
+
 int handle_request(int client_fd, struct http_request req) {
     printf("Request: %s %s\n", req.method, req.path);
 
     if (strcmp(req.method, "GET") == 0) {
         char filepath[512];
 
+        char* path = normalize(req.path);
+
         struct redirect redirects[] = {
             { "/", "/home/" },
-            { "/ticha", "/ticha/" },
             { NULL, NULL }
         };
 
         const char *target = NULL;
         for (int i = 0; redirects[i].from != NULL; i++) {
-            if (strcmp(req.path, redirects[i].from) == 0) {
+            if (strcmp(path, redirects[i].from) == 0) {
                 target = redirects[i].to;
                 break;
             }
@@ -76,7 +91,7 @@ int handle_request(int client_fd, struct http_request req) {
             write(client_fd, response, strlen(response));
             return 0;
         } else {
-            const char *clean_path = req.path[0] == '/' ? req.path + 1 : req.path;
+            const char *clean_path = path[0] == '/' ? path + 1 : path;
 
             if (strchr(clean_path, '.') == NULL) {
                 snprintf(filepath, sizeof(filepath), "static/%s/index.html", clean_path);
@@ -93,10 +108,14 @@ int handle_request(int client_fd, struct http_request req) {
         if (status == HTTP_NOT_FOUND) {
             printf("Not Found 404 :(\n");
             send_response(client_fd, "HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\nConnection: close\r\n\r\n");
+            free(path);
+            free(buffer);
             return 0;
         } else if (status == HTTP_INTERNAL_ERROR) {
             printf("Error 500 :(\n");
             send_response(client_fd, "HTTP/1.1 500 Internal Server Error\r\nContent-Length: 0\r\nConnection: close\r\n\r\n");
+            free(path);
+            free(buffer);
             return 0;
         }
 
@@ -125,6 +144,7 @@ int handle_request(int client_fd, struct http_request req) {
         write(client_fd, header, strlen(header));
         write(client_fd, buffer, size);
 
+        free(path);
         free(buffer);
         return 0;
         
